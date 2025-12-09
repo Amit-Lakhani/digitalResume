@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 p-10">
+
+    <h1 id="title" class="text-3xl font-bold mb-6"></h1>
+
+    <div id="contentArea" class="space-y-6"></div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const page = params.get("page");
+
+        const titles = {
+            about: "About Me",
+            projects: "Projects",
+            integrations: "Integrations",
+            images: "Images"
+        };
+
+        document.getElementById("title").innerText = titles[page] || "Section";
+
+        const contentArea = document.getElementById("contentArea");
+
+        // ---- ABOUT ME ----
+        if (page === "about") {
+            contentArea.innerHTML = `
+        <p class="text-gray-700 text-lg leading-7">
+          Hi, I’m Amit Lakhani — an AI Developer focused on automations, integrations, and scalable AI-driven workflows.
+        </p>
+      `;
+        }
+
+        // ---- PROJECTS (TITLE + DESC + IMAGE SLIDER) ----
+        if (page === "projects") {
+            contentArea.innerHTML = `
+        <h2 class="text-2xl font-semibold">AI Automation Workflow</h2>
+        <p class="text-gray-700 leading-7">
+          A complete automation pipeline built using Python, n8n, Supabase embeddings, and LLM orchestration.
+        </p>
+
+        <!-- IMAGE SLIDER -->
+        <div class="relative w-full max-w-xl mx-auto mt-6">
+          <div id="slider" class="overflow-hidden rounded-lg shadow-lg">
+            <div class="flex transition duration-500" id="slideTrack">
+              <img src="img1.jpg" class="w-full object-cover" />
+              <img src="img2.jpg" class="w-full object-cover" />
+              <img src="img3.jpg" class="w-full object-cover" />
+            </div>
+          </div>
+
+          <!-- SLIDER BUTTONS -->
+          <div class="flex justify-center space-x-4 mt-4">
+            <button onclick="moveSlide(-1)" class="px-4 py-2 bg-gray-800 text-white rounded">Prev</button>
+            <button onclick="moveSlide(1)" class="px-4 py-2 bg-blue-600 text-white rounded">Next</button>
+          </div>
+        </div>
+      `;
+
+            let current = 0;
+            function moveSlide(step) {
+                const track = document.getElementById("slideTrack");
+                const total = track.children.length;
+                current = (current + step + total) % total;
+                track.style.transform = `translateX(-${current * 100}%)`;
+            }
+        }
+
+        // ---- INTEGRATIONS ----
+        if (page === "integrations") {
+            contentArea.innerHTML = `
+        <h2 class="text-2xl font-semibold">Integrations</h2>
+        <p class="text-gray-700 leading-7">
+          A list of platforms I have integrated with: n8n, Supabase, OpenAI, Pinecone, Gmail API, WhatsApp Cloud API.
+        </p>
+      `;
+        }
+
+        // ---- IMAGES ----
+        if (page === "images") {
+            let html = "";
+            for (let i = 1; i <= 6; i++) {
+                html += `
+          <div class="bg-white p-4 rounded-lg shadow">
+            <div class="w-full h-40 bg-gray-300 rounded mb-3"></div>
+            <p class="text-gray-600 text-sm">Image ${i}</p>
+          </div>`;
+            }
+            contentArea.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${html}</div>`;
+        }
+    </script>
+
+</body>
+
+</html>
